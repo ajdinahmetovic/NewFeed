@@ -1,16 +1,33 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  untitled.py
+
 from newsapi import NewsApiClient
 import serial
 import time
 
 
-#serial = serial.Serial(port = '/dev/rfcomm0', baudrate=38400)
+from subprocess import call
+'''
+serial = serial.Serial(port = '/dev/rfcomm0', 
+						baudrate=38400, 
+						parity=serial.PARITY_NONE,
+						stopbits=serial.STOPBITS_ONE,
+						bytesize=serial.EIGHTBITS,
+						timeout=1)
+serial.write('Connected\n')
+'''
 newsapi = NewsApiClient(api_key='b5a3ea3530de476cb0a17415ff59cd16')
 
 while True:
     s = str(newsapi.get_top_headlines(language='en', q = 'tech'))
+    '''print (s)'''
 
+	
     while (s.find('title') > 0):
-        print(s[s.find('title') + 9 : s.find('description') - 4])
-        #serial.write(s[s.find('title') + 9 : s.find('description') - 4])
-        s = s[s.find('description') + 2:]
-        time.sleep(20)
+        print(s[s.find('title') + 10 : s.find('url') - 5])
+        #serial.write(s[s.find('title') + 10 : s.find('url') - 5].encode('ascii')+'\n')
+        time.sleep(5)
+        s = s[s.find('url') + 2:]
+        
